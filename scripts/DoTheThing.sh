@@ -6,7 +6,7 @@
 
 ./controllerManagerClientCertificate.sh
 
-./kubeProxyClientCertificate.sh
+./kubeProxyCertificate.sh
 
 ./schedulerClientCertificate.sh
 
@@ -16,4 +16,8 @@
 
 ./distributeKeys.sh
 
-rm -f *.csr *.json *.pem
+./generateKubeConfigs.sh
+
+./dataEncryptionConfigAndKey.sh
+
+rm -f *.csr *.json *.pem *.kubeconfig *.yaml
