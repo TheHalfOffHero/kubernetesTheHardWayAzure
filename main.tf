@@ -174,6 +174,11 @@ resource "azurerm_virtual_machine" "controller-vm" {
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
+  tags = {
+    environment = "dev"
+    role = "controller"
+    owner = "Matt Ruiz"
+  }
 }
 
 resource "azurerm_availability_set" "worker-as" {
@@ -255,5 +260,10 @@ resource "azurerm_virtual_machine" "worker-vm" {
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
+  }
+  tags = {
+    environment = "dev"
+    role = "worker"
+    owner = "Matt Ruiz"
   }
 }
