@@ -7,9 +7,10 @@ auth_source: cli
 
 # fetches VMs from an explicit list of resource groups instead of default all (- '*')
 include_vm_resource_groups:
-    - '*'
+    - 'kubernetes'
 
 plain_host_names: yes
 
 keyed_groups:
     - key: tags.role
+      separator: ""

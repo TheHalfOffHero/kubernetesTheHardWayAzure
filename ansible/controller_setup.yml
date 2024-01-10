@@ -1,0 +1,48 @@
+---
+- hosts: controller
+  become: yes
+  tasks:
+    - name: ping
+      ping:
+    
+    - name: install etcd
+      apt:
+        update_cache: yes
+        name: etcd
+        state: present
+
+    - name: setup etcd directories
+      file:
+        path: /etc/etcd
+        state: directory
+        mode: '700'
+
+    - copy: src=/home/kuberoot/ca.pem dest=/etc/etcd/ remote_src=yes
+    - copy: src=/home/kuberoot/kubernetes-key.pem dest=/etc/etcd/ remote_src=yes
+    - copy: src=/home/kuberoot/kubernetes.pem dest=/etc/etcd/ remote_src=yes
+
+    - name: configure and enable kubernetes services
+      script: ../scripts/controller_setup.sh
+      register: out
+
+    - name: restart etcd
+      service:
+        name: etcd
+        state: restarted
+
+    - name: restart kube-apiserver
+      service:
+        name: kube-apiserver
+        state: restarted
+
+    - name: restart kube-controller-manager
+      service:
+        name: kube-controller-manager
+        state: restarted
+
+    - name: restart kube-scheduler
+      service:
+        name: kube-scheduler
+        state: restarted
+
+    - debug: var=out.stdout_lines
